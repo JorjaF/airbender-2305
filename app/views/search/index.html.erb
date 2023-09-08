@@ -1,0 +1,27 @@
+<%= form_tag(search_path, method: :get) do %>
+  <label for="nation">Select a Nation:</label>
+  <%= select_tag 'nation', options_for_select(['Fire Nation', 'Water Tribe', 'Earth Kingdom', 'Air Nomads']) %>
+  <%= submit_tag 'Search For Members' %>
+<% end %>
+
+<% if @members.present? %>
+  <h2>Total number of people in the <%= @selected_nation %>:</h2>
+  <p><%= @members.size %> (should be close to 100)</p>
+
+  <h2>List of the first 25 members:</h2>
+  <ul>
+    <% @members.first(25).each do |member| %>
+      <li class="member-info">
+        <h3>Name: <%= member.name %></h3>
+        <% if member.photo.present? %>
+          <%= image_tag member.photo.url, alt: member.name %>
+        <% end %>
+        <p>Allies: <%= member.allies.presence || 'None' %></p>
+        <p>Enemies: <%= member.enemies.presence || 'None' %></p>
+        <p>Affiliations: <%= member.affiliations.presence || 'None' %></p>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No members found for the selected nation.</p>
+<% end %>
